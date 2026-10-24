@@ -9,27 +9,27 @@ import { AuthGuard } from '@nestjs/passport';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // 1. مسار تسجيل مستخدم جديد: POST /auth/register
+  //  POST /auth/register
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
   }
 
-  // 2. مسار تسجيل الدخول: POST /auth/login
+  //  POST /auth/login
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
 
-  // 3. مسار تجديد الجلسة: POST /auth/refresh
+  //  POST /auth/refresh
   @HttpCode(HttpStatus.OK)
   @Post('refresh')
   async refreshTokens(@Body() refreshTokenDto: RefreshTokenDto) {
     return this.authService.refreshTokens(refreshTokenDto.refreshToken);
   }
 
-  // 4. مسار تسجيل الخروج (محمي يتطلب Access Token): POST /auth/logout
+  // (محمي يتطلب Access Token): POST /auth/logout
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
   @Post('logout')
