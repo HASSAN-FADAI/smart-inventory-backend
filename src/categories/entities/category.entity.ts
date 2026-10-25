@@ -3,8 +3,8 @@ import { Product } from '../../products/entities/product.entity';
 
 @Entity('categories')
 export class Category {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ unique: true })
   name: string;
@@ -12,8 +12,8 @@ export class Category {
   @Column({ nullable: true })
   description: string;
 
-   @OneToMany(() => Product, (product) => product.category)
-products: Product[];
+  @OneToMany(() => Product, (product) => product.category)
+  products: Product[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Category } from '../../caegories/entities/catigory.entity';
+ import { Category } from '../../categories/entities/category.entity';
 
 @Entity('products')
 export class Product {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ unique: true })
   sku: string;
@@ -27,12 +27,12 @@ export class Product {
   @Column({ default: 5 })
   minStockLevel: number;
 
-  @ManyToOne(() => Category, (category) => category.products, { onDelete: 'RESTRICT' })
+   @ManyToOne(() => Category, (category) => category.products, { onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'categoryId' })
-  category: Category;
+   category: Category;
 
   @Column()
-  categoryId: number;
+  categoryId: string;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, UnauthorizedException, ForbiddenException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException ,UnauthorizedException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
@@ -7,6 +7,7 @@ import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -77,6 +78,34 @@ export class AuthService {
       throw new ForbiddenException('Invalid or Expired Refresh Token');
     }
   }
+
+
+  async changePassword(userId: string, changePasswordDto: ChangePasswordDto) {
+  // 1. البحث عن المستخدم في قاعدة البيانات
+  const user = await this.userRepository.findOne({ where: { id: userId } });
+  if (!user) {
+    throw new NotFoundException('المستخدم غير موجود');
+  }
+
+  // 2. التحقق من صحة كلمة المرور القديمة
+  const isPasswordValid = await bcrypt.compare(
+    changePasswordDto.oldPassword,
+    user.password,
+  );
+  if (!isPasswordValid) {
+    throw new UnauthorizedException('كلمة المرور القديمة غير صحيحة');
+  }
+
+  // 3. تشفير كلمة المرور الجديدة وتحديثها
+  user.password = await bcrypt.hash(changePasswordDto.newPassword, 10);
+  await this.userRepository.save(user);
+
+  return {
+    success: true,
+    message: 'تم تغيير كلمة المرور بنجاح',
+  };
+}
+
 
   async logout(userId: string) {
     await this.userRepository.update(userId, { refreshToken: null as any });

@@ -5,7 +5,7 @@ import { ConfigModule,ConfigService } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
-import { CategoriesModule } from './caegories/catigories.module';
+import { CategoriesModule } from './categories/categories.module'; 
 import { ProductsModule } from './products/products.module';
 import { SalesModule } from './sales/sales.module';
 import { AuthModule } from './auth/auth.module';
@@ -42,6 +42,8 @@ import { APP_GUARD } from '@nestjs/core';
     ProductsModule,
     SalesModule,
     AuthModule,
+    CategoriesModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService,
