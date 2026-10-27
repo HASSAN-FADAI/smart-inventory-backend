@@ -10,6 +10,7 @@ import { ProductsModule } from './products/products.module';
 import { SalesModule } from './sales/sales.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
+import { InventoryModule } from './inventory/inventory.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { APP_GUARD } from '@nestjs/core';
     AuthModule,
     CategoriesModule,
     ProductsModule,
+    InventoryModule,
   ],
   controllers: [AppController],
   providers: [AppService,
