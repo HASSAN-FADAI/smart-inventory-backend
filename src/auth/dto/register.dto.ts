@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString, MinLength, IsEnum, IsOptional } from 'class-validator';
+import { Role } from '../enums/role.enum';
 
 export class RegisterDto {
   @IsEmail({}, { message: 'البريد الإلكتروني غير صالح' })
@@ -9,6 +10,6 @@ export class RegisterDto {
   password: string;
 
   @IsOptional()
-  @IsEnum(['ADMIN', 'MANAGER', 'CASHIER'], { message: 'الدور غير صالح' })
-  role?: string;
+  @IsEnum(Role, { message: 'الدور غير صالح (admin, manager, cashier)' })
+  role?: Role;
 }
